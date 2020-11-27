@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller
@@ -13,7 +14,10 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $data = $request->all();
-        $user = User::where('login', $data['login'])->where('password', $data['password'])->first();
+        $user = User::where('login', $data['login'])->first();
+        if (!Hash::check($data['password'], $user->password)){
+            throw new \Exception('invalid password');
+        }
 
         if ($user) {
             $token = Str::random(40);
