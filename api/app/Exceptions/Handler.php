@@ -51,22 +51,15 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-//        return parent::render($request, $exception);
-        $rendered = parent::render($request, $exception);
-        Log::info('app.requests', ['request' => $request->all()]);
-        $tg = new Client(['base_uri' => 'https://api.telegram.org/bot1412335892:AAEc1upGP0PCev1BhQVnJsIVB65fY_QYShc/']);
-        $tg->post('sendMessage', [
-            'query' => [
-                'chat_id' => 539798885,
-                'text' => $exception->getMessage() ? $exception->getMessage() : get_class($exception)
-            ]
-        ]);
-
-        return response()->json([
-            'error' => [
-                'code' => $rendered->getStatusCode(),
-                'message' => $exception->getMessage(),
-            ]
-        ], $rendered->getStatusCode());
+        return parent::render($request, $exception);
+//        $rendered = parent::render($request, $exception);
+//        Log::info('app.requests', ['request' => $request->all()]);
+//
+//        return response()->json([
+//            'error' => [
+//                'code' => $rendered->getStatusCode(),
+//                'message' => $exception->getMessage(),
+//            ]
+//        ], $rendered->getStatusCode());
     }
 }

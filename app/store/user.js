@@ -25,7 +25,9 @@ export const mutations = {
 
 export const actions = {
   getCurrentUser ({ commit }) {
-    return this.$axios.$get('/users/me')
+    return this.$axios.$get('/users/me').then((res) => {
+      commit('setCurrentUser', res)
+    })
   },
 
   getAll ({ commit }) {

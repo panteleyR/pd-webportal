@@ -11,6 +11,16 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
+    public function me(Request $request)
+    {
+        $user = auth()->user()->load('role');
+        if ($user) {
+            return response()->json($user);
+        }
+
+        throw new \Exception('unauth');
+    }
+
     public function login(Request $request)
     {
         $data = $request->all();
@@ -23,7 +33,7 @@ class AuthController extends Controller
             $token = Str::random(40);
             $expireDate = date('Y-m-d H:i:s', time() + 60*60*24);
             $user->remember_token = $token;
-            $user->token_expires = $expireDate;
+            $user->expired_at = $expireDate;
             $user->save();
 
             return response()->json(['user' => $user, 'remember_token' => $token]);

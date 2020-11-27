@@ -13,17 +13,18 @@
 
 $router->group(['prefix' => 'api'], function () use ($router) {
     $router->group(['prefix' => 'v1'], function () use ($router) {
-        $router->get('/login', 'AuthController@login');
-        $router->get('/logout', 'AuthController@logout');
+        $router->post('/login', 'AuthController@login');
+        $router->post('/logout', 'AuthController@logout');
+        $router->get('/pass', 'PassController@index');
+        $router->post('/pass', 'PassController@store');
+        $router->get('/addresses', 'AddressController@index');
 
         $router->group(['middleware' => 'auth'], function () use ($router) {
-            $router->get('/pass', 'PassController@index');
-            $router->post('/pass', 'PassController@store');
+            $router->get('/users/me', 'AuthController@me');
             $router->put('/pass/{id}', 'PassController@update');
             $router->delete('/pass/{id}', 'PassController@destroy');
 
 
-            $router->get('/addresses', 'AddressController');
         });
     });
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Role;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -15,7 +16,7 @@ class UserSeeder extends Seeder
         app('db')->table('users')->insert([
             'name' => 'Преподаватель',
             'login' => 'prepod',
-            'password' => bcrypt('paroltest123'),
+            'password' => app('hash')->make('paroltest123'),
             'role_id' => $roleAdmin->id,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')

@@ -40,7 +40,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->app['auth']->viaRequest('api', function ($request) {
             $token = $request->bearerToken();
             if ($token && $user = User::where('remember_token', $token)->first()) {
-                if (time() < strtotime($user->token_expires)) {
+                if (time() < strtotime($user->expired_at)) {
                     return $user;
                 }
             }

@@ -24,8 +24,24 @@ export const mutations = {
 
 export const actions = {
   getAll ({ commit }) {
-    return this.$axios.$get(process.env.baseUrl + 'api/v' + process.env.apiVersion + '/pass').then((res) => {
+    return this.$axios.$get('/pass').then((res) => {
       commit('setList', res)
     })
+  },
+  store ({ commit }, { fio, addressId }) {
+    return this.$axios.$post('/pass', {
+      fio,
+      address_id: addressId
+    })
+  },
+  update ({ commit }, { id, fio, status, addressId }) {
+    return this.$axios.$put('/pass/' + id, {
+      fio,
+      status,
+      address_id: addressId
+    })
+  },
+  delete ({ commit }, { id }) {
+    return this.$axios.$delete('/pass/' + id)
   }
 }

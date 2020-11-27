@@ -14,11 +14,14 @@
           v-text="'pd-polytech.local'"
         />
         <v-spacer />
-        <v-btn v-if="getRouteBaseName() !== 'login'" text @click="$routeri18n.push('login')">
+        <v-btn v-if="getRouteBaseName() === 'list'" text @click="$routeri18n.push('login')">
           <v-icon>mdi-arrow-right-thick</v-icon>
-          <div v-if="this.$vuetify.breakpoint.smAndUp">{{ $t('auth.login') }}</div>
+          <div v-if="this.$vuetify.breakpoint.smAndUp">Выход</div>
         </v-btn>
-        <BaseLocaleList/>
+        <v-btn v-if="getRouteBaseName() !== 'login' && getRouteBaseName() !== 'list'" text @click="$routeri18n.push('login')">
+          <v-icon>mdi-door</v-icon>
+          <div v-if="this.$vuetify.breakpoint.smAndUp">Вход</div>
+        </v-btn>
       </v-container>
     </v-app-bar>
     <v-main class="pa-0">
@@ -49,17 +52,6 @@
         <span>© 20 pd-polytech.local</span>
       </v-container>
     </v-footer>
-    <BaseMaterialSnackbar
-      v-model="snackbar"
-      :type="notifyColor"
-      timeout="3000"
-      v-bind="{
-        top: true,
-        right: true
-      }"
-    >
-      {{ notifyText }}
-    </BaseMaterialSnackbar>
   </v-app>
 </template>
 
@@ -115,7 +107,7 @@ export default {
   },
 
   mounted () {
-    this.$vuetify.theme.dark = true
+    this.$vuetify.theme.dark = false
   }
 }
 </script>
