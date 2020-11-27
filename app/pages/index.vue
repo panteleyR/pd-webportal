@@ -12,7 +12,22 @@
               ФИО: {{ $store.getters['pass/list'][0].fio }}
             </v-col>
             <v-col cols="12" align-self="center">
-              Статус: {{ $store.getters['pass/list'][0].status }}
+              Статус:
+              <span
+                v-if="$store.getters['pass/list'][0].status === 'Готово'"
+                style="color: green"
+              >
+                {{ $store.getters['pass/list'][0].status }}
+              </span>
+              <span
+                v-else
+                style="color: darkorange"
+              >
+                {{ $store.getters['pass/list'][0].status }}
+              </span>
+            </v-col>
+            <v-col cols="12" align-self="center">
+              Статус заявки действует до: {{ $store.getters['pass/list'][0].to }}
             </v-col>
             <v-col cols="12" align-self="center">
               Адрес: {{ $store.getters['pass/list'][0].address.name }}

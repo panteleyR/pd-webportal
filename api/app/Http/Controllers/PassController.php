@@ -50,7 +50,7 @@ class PassController extends Controller
 
     public function destroy(int $id)
     {
-        if (!Auth::guest() && auth()->role->name === 'Admin') {
+        if (!Auth::guest() && auth()->user()->role->name === 'Admin') {
             $pass = Pass::where('id', $id)->first();
             $pass->delete();
             return response()->json(['message' => 'ok']);

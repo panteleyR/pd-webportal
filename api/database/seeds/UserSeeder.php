@@ -14,8 +14,8 @@ class UserSeeder extends Seeder
     {
         $roleAdmin = Role::where('name', 'admin')->first();
         app('db')->table('users')->insert([
-            'name' => 'Преподаватель',
-            'login' => 'prepod',
+            'name' => 'Админ',
+            'login' => 'admin',
             'password' => app('hash')->make('paroltest123'),
             'role_id' => $roleAdmin->id,
             'created_at' => date('Y-m-d H:i:s'),

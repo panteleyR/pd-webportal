@@ -214,7 +214,7 @@ export default {
       return this.$store.getters['pass/list']
     },
     status () {
-      return ['Обрабатывается', 'Готовов']
+      return ['Обрабатывается', 'Готово']
     },
     address () {
       return this.$store.getters['address/list']
@@ -223,7 +223,7 @@ export default {
 
   methods: {
     deletePass (item) {
-      this.deletePassId = item.id
+      this.deleteId = item.id
       this.dialogDeletePass = true
     },
     editPass (item) {
@@ -235,13 +235,14 @@ export default {
     },
     tryDeletePass () {
       this.loadingDeletePass = true
-      this.$store.dispatch('pass/update', {
+      this.$store.dispatch('pass/delete', {
         id: this.deleteId
       }).then(() => {
         this.$store.dispatch('pass/getAll')
       }).catch(() => {
         alert('Что-то пошло не так')
       }).finally(() => {
+        this.dialogDeletePass = false
         this.loadingDeletePass = false
       })
     },
@@ -257,6 +258,7 @@ export default {
       }).catch(() => {
         alert('Что-то пошло не так')
       }).finally(() => {
+        this.dialogUpdatePass = false
         this.loadingUpdatePass = false
       })
     }
