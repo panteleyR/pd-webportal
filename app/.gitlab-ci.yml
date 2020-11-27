@@ -1,0 +1,49 @@
+image: node:12.18
+
+stages:
+  - deploy
+  - stage
+
+Deploy:
+  stage: deploy
+  only:
+    - release
+
+  before_script:
+    - apt-get update
+    - apt-get install -y software-properties-common
+    - apt-get install -y rsync
+    - apt-get install -y -qq sshpass
+    - apt-get install -y curl libpq-dev libzip-dev libonig-dev libcurl4-openssl-dev  libicu-dev libpng-dev libjpeg62-turbo-dev libfreetype6-dev libmagickwand-6.q16-dev libldap2-dev wget zip unzip libaio1 --no-install-recommends
+
+  script:
+    - mv .env.production .env
+    - ls -la
+    - npm i
+    - shopt -s dotglob
+    - sshpass -V
+    - export SSHPASS=$SERVER_PASSWORD
+    - sshpass -e rsync --exclude '.gitlab-ci.yml' -avzh -e 'ssh -o StrictHostKeyChecking=no -p 22' "${PWD}"/* root@46.229.212.60:/var/www/pixel.istream/app/
+    - sshpass -e ssh -p 22 root@46.229.212.60 'cd /var/www/pixel.istream/app && npm run build && pm2 restart NuxtAppName'
+
+Stage:
+  stage: stage
+  only:
+    - stage
+
+  before_script:
+    - apt-get update
+    - apt-get install -y software-properties-common
+    - apt-get install -y rsync
+    - apt-get install -y -qq sshpass
+    - apt-get install -y curl libpq-dev libzip-dev libonig-dev libcurl4-openssl-dev  libicu-dev libpng-dev libjpeg62-turbo-dev libfreetype6-dev libmagickwand-6.q16-dev libldap2-dev wget zip unzip libaio1 --no-install-recommends
+
+  script:
+    - mv .env.stage .env
+    - ls -la
+    - npm i
+    - shopt -s dotglob
+    - sshpass -V
+    - export SSHPASS=$SERVER_PASSWORD
+    - sshpass -e rsync --exclude '.gitlab-ci.yml' -avzh -e 'ssh -o StrictHostKeyChecking=no -p 22' "${PWD}"/* root@46.229.212.60:/var/www/pixel.istream.stage/app/
+    - sshpass -e ssh -p 22 root@46.229.212.60 'cd /var/www/pixel.istream.stage/app && npm run build && pm2 restart NuxtAppStageName'
